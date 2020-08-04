@@ -44,7 +44,7 @@ void process_with_client(int confd){
 		if(n){
 			buff[n]='\0';
 			printf("receive msg from client: %s\n", buff);
-		}else if(ECONNREST){
+		}else if(n<0){
 			printf("thread exit\n");
 			close(confd);
 			break;
@@ -61,9 +61,13 @@ int main (int argc,char* const argv[]){
 	if(!(parse_argv(listen_addr,port_str,argc,argv))){
 		return 0
 	}
-	int port=strtoul(port,temp,10);
+	int port=strtoul(port_str,temp,10);
+	int sockfd,confd;
 
-	int sockfd=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP),confd;
+	if((socketfd=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP))==-1){
+		printf("socket() failed\n");
+		return 0;
+	}
 
 	unsigned int addr_int;
 	inet_pton(AF_INET,listen_addr,&addr_int);
