@@ -72,7 +72,7 @@ int main (int argc,char* const argv[]){
 	unsigned int addr_int;
 	inet_pton(AF_INET,listen_addr,&addr_int);
 	struct in_addr addr={
-		.s_addr=htonl(addr_int)
+		.s_addr=addr_int
 	};
 	struct sockaddr_in addr_sock;
 	memset(&addr_sock,0,sizeof(struct sockaddr));
@@ -84,7 +84,7 @@ int main (int argc,char* const argv[]){
 		printf("bind() failed :%s\n",strerror(errno));
 		return 0;
 	}
-	if(listen(sockfd,3)==-1){
+	if(listen(sockfd,10)==-1){
 		printf("listen() failed: %s\n",strerror(errno));
 	}
 	pthread_t thread_arr[10];
