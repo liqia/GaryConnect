@@ -74,7 +74,6 @@ int main (int argc,char* const argv[]){
 	struct in_addr addr={
 		.s_addr=htonl(addr_int)
 	};
-	printf("addr_int:%u\n", addr.s_addr);
 	struct sockaddr_in addr_sock;
 	memset(&addr_sock,0,sizeof(struct sockaddr));
 	addr_sock.sin_family=AF_INET;

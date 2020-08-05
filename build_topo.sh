@@ -25,3 +25,6 @@ ip netns exec server route add default gw 192.168.100.254
 
 #test 
 #ip netns exec client ping 192.168.100.1 -I 10.0.100.1
+
+#./client -a 10.10.1.1 -b 6667 -c 0.0.0.0 -d 6666
+#./server -l 0.0.0.0 -p 6666

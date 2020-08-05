@@ -9,40 +9,32 @@
 #include<arpa/inet.h>
 #include <errno.h>
 
-int parse_argv(char *str_sip,char *str_sport,char*str_dip,char*str_dport,int argc,char* const argv[]){
+int parse_argv(char*str_dip,char*str_dport,int argc,char* const argv[]){
 	int opt;
-	while((opt=getopt(argc,argv,"a:b:c:d:"))!=-1){
+	while((opt=getopt(argc,argv,"d:p:"))!=-1){
 		switch (opt){
-			case 'a':
-				strcpy(str_sip,optarg);
-				printf("str_sip:%s\n", str_sip);
-				break;
-			case 'b':
-				strcpy(str_sport,optarg);
-				printf("str_sport:%s\n", str_sport);
-				break;
-			case 'c':
-				strcpy(str_dip,optarg);
-				printf("str_dip:%s\n", str_dip);
-				break;
-			case 'd':
+			case 'p':
 				strcpy(str_dport,optarg);
 				printf("str_dport:%s\n", str_dport);
 				break;
+			case 'd':
+				strcpy(str_dip,optarg);
+				printf("str_dip:%s\n", str_dip);
+				break;
 		}
 	}
-	if(!(strlen(str_sip)&&strlen(str_sport)&&strlen(str_dip)&&strlen(str_dport)))
+	if(!(strlen(str_dip)&&strlen(str_dport)))
 		return 0;
 	return 1;
 }
 
 int main (int argc,char *const argv[]){
-	char str_sip[20],str_sport[10],str_dip[20],str_dport[10];
+	char str_dip[20],str_dport[10];
 	char send_text[1024];
-	int int_sip,int_dip;
-	struct sockaddr_in sock_saddr,sock_daddr;
+	int int_dip;
+	struct sockaddr_in sock_daddr;
 
-	if(!parse_argv(str_sip,str_sport,str_dip,str_dport,argc,argv)){
+	if(!parse_argv(str_dip,str_dport,argc,argv)){
 		printf("parse argv error!\n");
 		return 0;
 	}
@@ -54,13 +46,10 @@ int main (int argc,char *const argv[]){
 	}
 
 	memset(&sock_daddr,0,sizeof(sock_daddr));
-	inet_pton(AF_INET,str_sip,&int_sip);
 	inet_pton(AF_INET,str_dip,&int_dip);
-
 	sock_daddr.sin_family=AF_INET;
 	sock_daddr.sin_addr.s_addr=htonl(int_dip);
 	sock_daddr.sin_port=htons(strtoul(str_dport,NULL,10));
-	printf("str_dport:%d\n", strtoul(str_dport,NULL,10));
 
 	if(connect(socketfd,&sock_daddr,sizeof(sock_daddr))<0){
 		printf("connect() failed: %s\n",strerror(errno));
