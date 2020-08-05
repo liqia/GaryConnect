@@ -48,7 +48,7 @@ int main (int argc,char *const argv[]){
 	memset(&sock_daddr,0,sizeof(sock_daddr));
 	inet_pton(AF_INET,str_dip,&int_dip);
 	sock_daddr.sin_family=AF_INET;
-	sock_daddr.sin_addr.s_addr=htonl(int_dip);
+	sock_daddr.sin_addr.s_addr=(int_dip);
 	sock_daddr.sin_port=htons(strtoul(str_dport,NULL,10));
 
 	if(connect(socketfd,&sock_daddr,sizeof(sock_daddr))<0){
